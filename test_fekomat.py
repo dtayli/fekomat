@@ -1,3 +1,6 @@
+# Copyright (c) 2019 Doruk Tayli
+# test_fekomat.py: Basic tests for reading FEKO impedance matrix files
+
 import os
 import struct
 import binascii
