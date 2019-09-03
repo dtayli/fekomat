@@ -20,3 +20,6 @@ python fekomat.py <input_file> <output_file> --type mat
 ```
 
 4. Use the --help argument to check for other options
+
+## TODO
++ [ ] add option to buffer and read impedance matrix files (will be useful for large files)
