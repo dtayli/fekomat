@@ -80,7 +80,7 @@ def read_mat_data(mat_file, header):
     return mat_data
 
 
-def main(input_file, output_file, file_type): # pragma: no cover
+def main(input_file, output_file, file_type):
     assert os.path.isfile(input_file), "Input file does not exist!"
     assert file_type in ('mat', 'npy', 'csv'), "File type is not one of mat, npy, csv"
     print('Processing input file:', input_file)
@@ -98,7 +98,7 @@ def main(input_file, output_file, file_type): # pragma: no cover
 
 if __name__ == "__main__": # pragma: no cover
     parser = argparse.ArgumentParser(description=textwrap.dedent('''\
-             Convert a FEKO matrix file to a Matlab (*.mat) or Python (*.npz) or CSV file
+             Convert a FEKO matrix file to a Matlab (*.mat) or Python (*.npy) or CSV file
 
              Example use:
              ------------
