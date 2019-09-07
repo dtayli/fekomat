@@ -66,3 +66,19 @@ def test_fekomat(precision):
     assert header == header_test, "Headers don't match!"
     assert np.all(mat_data == mat_data_test), "Matrix data doesn't match!"
     os.remove(test_file)
+
+@pytest.mark.parametrize("file_type, out_file", [("mat", "test_out.mat"), ("npy", "test_out.npy"),\
+                                                 ("csv", "test_out.csv")])
+def test_output_types(file_type, out_file):
+    test_file = "test_mat.mat"
+    header, mat_data = create_test_mat_file(test_file, np.double, 5)
+    fekomat.main(test_file, out_file, file_type)
+    if file_type == "mat":
+        zmat = scipy.io.loadmat(out_file)["Zmat"]
+    elif file_type == "npy":
+        zmat = np.load(out_file)
+    else:
+        zmat = np.loadtxt(out_file, dtype=np.dtype("cdouble"), delimiter=",")
+    assert np.allclose(mat_data, zmat)
+    os.remove(out_file)
+

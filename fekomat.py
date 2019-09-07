@@ -80,7 +80,7 @@ def read_mat_data(mat_file, header):
     return mat_data
 
 
-def main(input_file, output_file, file_type): # pragma: no cover
+def main(input_file, output_file, file_type):
     assert os.path.isfile(input_file), "Input file does not exist!"
     assert file_type in ('mat', 'npy', 'csv'), "File type is not one of mat, npy, csv"
     print('Processing input file:', input_file)
@@ -88,7 +88,7 @@ def main(input_file, output_file, file_type): # pragma: no cover
         header = read_mat_header(mat_file)
         mat_data = read_mat_data(mat_file, header)
     if file_type == 'mat':
-        scipy.io.savemat(output_file, dict(zip("Zmat", mat_data)))
+        scipy.io.savemat(output_file, dict(Zmat=mat_data))
     elif file_type == 'npy':
         np.save(output_file, mat_data)
     else:
@@ -98,7 +98,7 @@ def main(input_file, output_file, file_type): # pragma: no cover
 
 if __name__ == "__main__": # pragma: no cover
     parser = argparse.ArgumentParser(description=textwrap.dedent('''\
-             Convert a FEKO matrix file to a Matlab (*.mat) or Python (*.npz) or CSV file
+             Convert a FEKO matrix file to a Matlab (*.mat) or Python (*.npy) or CSV file
 
              Example use:
              ------------
@@ -108,8 +108,8 @@ if __name__ == "__main__": # pragma: no cover
     parser.add_argument('output', type=str, nargs=1, help='Output file name')
     parser.add_argument('--type', type=str, default='mat',
                         help=textwrap.dedent('''\
-                              output file type can be of two types:
-                              'mat', Matlab file
+                              output file type can be of three types:
+                              'mat', Matlab file (default)
                               'npy', Numpy file
                               'csv', comma seperated values'''))
     args = parser.parse_args()
