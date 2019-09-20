@@ -1,0 +1,6 @@
+argparse
+
+pytest
+
+numpy
+scipy
