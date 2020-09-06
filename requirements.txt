@@ -1,6 +1,0 @@
-argparse
-
-pytest
-
-numpy
-scipy
