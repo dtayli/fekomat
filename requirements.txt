@@ -1,0 +1,8 @@
+argparse
+
+pytest
+pytest-cov
+
+numpy
+scipy
+
