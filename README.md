@@ -14,14 +14,24 @@ git clone https://github.com/dtayli/fekomat.git fekomat
 cd fekomat
 ```
 
-3. (Optional) Test `fekomat` script
+3. Use the python `Pipenv` to install the `fekomat` package
+```
+pipenv install
+```
+
+4. Open `pipenv` shell
+```
+pipenv shell
+```
+
+5. (Optional) Test `fekomat` script
 ```
 pytest test_fekomat.py
 ```
 
-4. To convert FEKO impedance matrix to a Matlab data file:
+6. To convert FEKO impedance matrix to a Matlab data file:
 ```
 python fekomat.py <input_file> <output_file> --type mat
 ```
 
-5. Use the --help argument to check for other options
+7. Use the --help argument to check for other options
