@@ -95,3 +95,4 @@ def test_output_types(file_type, out_file):
         zmat = np.loadtxt(out_file, dtype=np.dtype("cdouble"), delimiter=",")
     assert np.allclose(mat_data, zmat)
     os.remove(out_file)
+    os.remove(test_file)

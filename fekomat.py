@@ -6,6 +6,7 @@
 #             Python numpy (*.npy), or CSV.
 
 import os
+import warnings
 import argparse
 import textwrap
 import sys
@@ -28,19 +29,15 @@ def read_mat_header(mat_file):
     for key, (fmt, check, size) in mat_header.items():
         data = mat_file.read(size)
         packet = struct.unpack(fmt, data)
-        assert (
-            packet[0],
-            packet[-1],
-        ) == check, "Beginning and ending size is incorrect"
+        if (packet[0], packet[-1]) != check:
+            raise ValueError("Packet beginning and ending size is incorrect")
         header_values.append(packet[1:-1])
     header = dict(zip(mat_header.keys(), header_values))
     header["version"] = header["version"][0]
-    try:
-        assert header["version"] == 5
-    except AssertionError:  # pragma: no cover
-        print(
+    if header["version"] != 5:
+        warnings.warn(
             "Warning: FEKO impedance matrix file version is not supported!\
-              Please check output filefor correctness."
+                      Please check output file for correctness."
         )
     header["precision"] = mat_precision[header["precision"][0]]
     header["rows"] = header["rows"][0]
@@ -62,18 +59,21 @@ def read_mat_data(mat_file, header):
     for i in range(rows):
         data = mat_file.read(size)
         packet = struct.unpack(fmt, data)
-        assert (packet[0], packet[-1]) == (
+        if (packet[0], packet[-1]) != (
             check,
             check,
-        ), "Beginning and ending data size is incorrect"
+        ):
+            raise ValueError("Beginning and ending data size is incorrect")
         temp = np.asarray(packet[1:-1], dtype=temp_type)
         mat_data[i, :] = temp[::2] + 1j * temp[1::2]
     return mat_data
 
 
 def main(input_file, output_file, file_type):
-    assert os.path.isfile(input_file), "Input file does not exist!"
-    assert file_type in ("mat", "npy", "csv"), "File type is not one of mat, npy, csv"
+    if not os.path.isfile(input_file):
+        raise FileNotFoundError("Input file does not exist!")
+    if not file_type in ("mat", "npy", "csv"):
+        raise TypeError("File type is not one of mat, npy, csv")
     print("Processing input file:", input_file)
     with open(input_file, "rb") as mat_file:
         header = read_mat_header(mat_file)
